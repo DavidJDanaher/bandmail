@@ -10,24 +10,34 @@ app.listen(apiPort);
 
 dbClient.connect(dbUrl, function(err, db) {
     var collection = db.collection('fans');
+    var response = { message: '', data: null};
 
     assert.equal(null, err);
     console.log('Connected successfully to server');
 
     app.get('/', function(req, res) {
-        var message;
-
-        collection.find().toArray(function(err, docs) {
+        collection.find().toArray(function(err, records) {
             assert.equal(err, null);
-            if (docs.length > 0) {
+            response.data = records;
+console.log(req);
+            if (records.length > 0) {
                 console.log('Found the following records');
-                console.log(docs);
+                console.log(records);
+                response.message = 'Found the following records';
             } else {
                 console.log('No records found.');
+                response.message = 'No records found';
             }
-
         });
-        res.send('GET request');
+
+        res.send(response);
     });
 
+    app.post('/', function(req, res) {
+        console.log(req.method);
+        console.log(req.url);
+        console.log(req.data);
+        res.send('POST');
+        // collection.insert()
+    });
 });

@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
-var app = require('./api/routes.js');
+var app = require('api/routes');
 
 // Connection URL
 var url = 'mongodb://localhost:27017/bandmail';
@@ -12,9 +12,9 @@ MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 
-  // findFans(db, function(){
-  //   db.close();
-  // });
+  findFans(db, function(){
+    db.close();
+  });
 });
 
 function insertFans(db, callback) {
